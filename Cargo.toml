@@ -4,9 +4,8 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-sqlite-loadable = "0.0.3"
+sqlite-loadable = "0.0.5"
 fastrand = "1.8.0"
 
 [lib]
-crate-type=["cdylib"]
-name="fastrand0"
+crate-type=["lib", "staticlib", "cdylib"]
