@@ -32,8 +32,26 @@ def execute_all(sql, args=None):
   return list(map(lambda x: dict(x), results))
 
 FUNCTIONS = [
-  "fastrand_debug",
-  "fastrand_version",
+  'fastrand_alphabetic',
+  'fastrand_alphanumeric',
+  'fastrand_blob',
+  'fastrand_bool',
+  'fastrand_char',
+  'fastrand_debug',
+  'fastrand_digit',
+  'fastrand_double',
+  'fastrand_int',
+  'fastrand_int',
+  'fastrand_int',
+  'fastrand_int64',
+  'fastrand_int64',
+  'fastrand_int64',
+  'fastrand_lowercase',
+  'fastrand_seed_get',
+  'fastrand_seed_set',
+  'fastrand_uppercase',
+  'fastrand_version'
+
 ]
 
 MODULES = [
@@ -56,7 +74,75 @@ class TestFastrand(unittest.TestCase):
   def test_fastrand_debug(self):
     debug = db.execute("select fastrand_debug()").fetchone()[0]
     self.assertEqual(len(debug.splitlines()), 2)
+
+  def test_fastrand_int(self):
+    self.skipTest("TODO")
+    fastrand_int = lambda x: db.execute("select fastrand_int(?)", []).fetchone()[0]
+    self.assertEqual(fastrand_int(), 0)
+
+  def test_fastrand_int64(self):
+    self.skipTest("TODO")
+    fastrand_int64 = lambda x: db.execute("select fastrand_int64(?)", []).fetchone()[0]
+    self.assertEqual(fastrand_int64(), 0)
   
+  def test_fastrand_double(self):
+    self.skipTest("TODO")
+    fastrand_double = lambda x: db.execute("select fastrand_double(?)", []).fetchone()[0]
+    self.assertEqual(fastrand_double(), 0)
+  
+  def test_fastrand_blob(self):
+    self.skipTest("TODO")
+    fastrand_blob = lambda x: db.execute("select fastrand_blob(?)", []).fetchone()[0]
+    self.assertEqual(fastrand_blob(), 0)
+
+  def test_fastrand_seed_get(self):
+    self.skipTest("TODO")
+    fastrand_seed_get = lambda x: db.execute("select fastrand_seed_get(?)", []).fetchone()[0]
+    self.assertEqual(fastrand_seed_get(), 0)
+
+  def test_fastrand_seed_set(self):
+    self.skipTest("TODO")
+    fastrand_seed_set = lambda x: db.execute("select fastrand_seed_set(?)", []).fetchone()[0]
+    self.assertEqual(fastrand_seed_set(), 0)
+  
+
+  
+  def test_fastrand_alphabetic(self):
+    self.skipTest("TODO")
+    fastrand_alphabetic = lambda x: db.execute("select fastrand_alphabetic(?)", []).fetchone()[0]
+    self.assertEqual(fastrand_alphabetic(), 0)
+
+  def test_fastrand_alphanumeric(self):
+    self.skipTest("TODO")
+    fastrand_alphanumeric = lambda x: db.execute("select fastrand_alphanumeric(?)", []).fetchone()[0]
+    self.assertEqual(fastrand_alphanumeric(), 0)
+
+  def test_fastrand_bool(self):
+    self.skipTest("TODO")
+    fastrand_bool = lambda x: db.execute("select fastrand_bool(?)", []).fetchone()[0]
+    self.assertEqual(fastrand_bool(), 0)
+
+  def test_fastrand_char(self):
+    self.skipTest("TODO")
+    fastrand_char = lambda x: db.execute("select fastrand_char(?)", []).fetchone()[0]
+    self.assertEqual(fastrand_char(), 0)
+
+  def test_fastrand_digit(self):
+    self.skipTest("TODO")
+    fastrand_digit = lambda x: db.execute("select fastrand_digit(?)", []).fetchone()[0]
+    self.assertEqual(fastrand_digit(), 0)
+  
+
+  def test_fastrand_lowercase(self):
+    self.skipTest("TODO")
+    fastrand_lowercase = lambda x: db.execute("select fastrand_lowercase(?)", []).fetchone()[0]
+    self.assertEqual(fastrand_lowercase(), 0)
+
+  def test_fastrand_uppercase(self):
+    self.skipTest("TODO")
+    fastrand_uppercase = lambda x: db.execute("select fastrand_uppercase(?)", []).fetchone()[0]
+    self.assertEqual(fastrand_uppercase(), 0)
+
 class TestCoverage(unittest.TestCase):                                      
   def test_coverage(self):                                                      
     test_methods = [method for method in dir(TestFastrand) if method.startswith('test_')]
