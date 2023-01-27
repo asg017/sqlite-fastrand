@@ -205,14 +205,6 @@ pub fn fastrand_bool(
     Ok(())
 }
 
-pub fn fastrand_char(
-    context: *mut sqlite3_context,
-    _values: &[*mut sqlite3_value],
-    rng: &Rc<RefCell<Rng>>,
-) -> Result<()> {
-    api::result_text(context, rng_borrow_or_err(rng)?.char(..).to_string())?;
-    Ok(())
-}
 pub fn fastrand_alphabetic(
     context: *mut sqlite3_context,
     _values: &[*mut sqlite3_value],
@@ -263,7 +255,15 @@ pub fn fastrand_digit(
     .map_err(|e| {
         Error::new_message(format!("base must be an unsigned 32-bit integer: {e}").as_str())
     })?;
-    api::result_text(context, rng_borrow_or_err(rng)?.digit(base).to_string())?;
+    match base {
+        1..=35 => api::result_text(context, rng_borrow_or_err(rng)?.digit(base).to_string())?,
+        _ => {
+            return Err(Error::new_message(
+                "base must be greater than 0 and less than 26",
+            ))
+        }
+    }
+
     Ok(())
 }
 
@@ -357,14 +357,6 @@ pub fn sqlite3_fastrand_init(db: *mut sqlite3) -> Result<()> {
         Rc::clone(&rng),
     )?;
 
-    define_scalar_function_with_aux(
-        db,
-        "fastrand_char",
-        0,
-        fastrand_char,
-        flags,
-        Rc::clone(&rng),
-    )?;
     define_scalar_function_with_aux(
         db,
         "fastrand_alphabetic",
