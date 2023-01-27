@@ -3,7 +3,7 @@ use sqlite_loadable::{api, define_scalar_function, define_scalar_function_with_a
 use sqlite_loadable::{prelude::*, Error};
 
 use fastrand::Rng;
-use std::cell::RefCell;
+use std::cell::{Ref, RefCell};
 use std::iter::repeat_with;
 use std::ops::Range;
 use std::rc::Rc;
@@ -66,13 +66,30 @@ Source: {}
     Ok(())
 }
 
+fn rng_borrow_or_err(rng: &Rc<RefCell<Rng>>) -> Result<Ref<Rng>> {
+    match rng.try_borrow() {
+        Ok(rng) => Ok(rng),
+        Err(err) => Err(Error::new_message(
+            format!("internal sqlite-fastrand error, could not borrow shared RNG: {err}").as_str(),
+        )),
+    }
+}
+
 pub fn fastrand_seed_set(
     context: *mut sqlite3_context,
     values: &[*mut sqlite3_value],
     rng: &Rc<RefCell<Rng>>,
 ) -> Result<()> {
-    let seed = api::value_int64(values.get(0).unwrap());
-    rng.borrow_mut().seed(seed.try_into().unwrap());
+    let seed: u64 = api::value_int64(
+        values
+            .get(0)
+            .ok_or_else(|| Error::new_message("expected seed as 1st argument"))?,
+    )
+    .try_into()
+    .map_err(|e| {
+        Error::new_message(format!("seed must be an usigned 64 bit integer: {e}").as_str())
+    })?;
+    rng.borrow_mut().seed(seed);
     api::result_bool(context, true);
     Ok(())
 }
@@ -82,7 +99,7 @@ pub fn fastrand_seed_get(
     _values: &[*mut sqlite3_value],
     rng: &Rc<RefCell<Rng>>,
 ) -> Result<()> {
-    api::result_text(context, rng.try_borrow().unwrap().get_seed().to_string())?;
+    api::result_text(context, rng_borrow_or_err(rng)?.get_seed().to_string())?;
     Ok(())
 }
 
@@ -100,21 +117,21 @@ pub fn fastrand_int(
             if range.is_empty() {
                 return Err("fuk".into());
             }
-            rng.try_borrow().unwrap().i32(range)
+            rng_borrow_or_err(rng)?.i32(range)
         }
         BtwnValues::From(start) => {
             let range = std::ops::RangeFrom {
                 start: api::value_int(start),
             };
-            rng.try_borrow().unwrap().i32(range)
+            rng_borrow_or_err(rng)?.i32(range)
         }
         BtwnValues::To(end) => {
             let range = std::ops::RangeTo {
                 end: api::value_int(end),
             };
-            rng.try_borrow().unwrap().i32(range)
+            rng_borrow_or_err(rng)?.i32(range)
         }
-        BtwnValues::Full => rng.try_borrow().unwrap().i32(..),
+        BtwnValues::Full => rng_borrow_or_err(rng)?.i32(..),
     };
     api::result_int(context, i);
     Ok(())
@@ -134,21 +151,21 @@ pub fn fastrand_int64(
             if range.is_empty() {
                 return Err("fuk".into());
             }
-            rng.try_borrow().unwrap().i64(range)
+            rng_borrow_or_err(rng)?.i64(range)
         }
         BtwnValues::From(start) => {
             let range = std::ops::RangeFrom {
                 start: api::value_int64(start),
             };
-            rng.try_borrow().unwrap().i64(range)
+            rng_borrow_or_err(rng)?.i64(range)
         }
         BtwnValues::To(end) => {
             let range = std::ops::RangeTo {
                 end: api::value_int64(end),
             };
-            rng.try_borrow().unwrap().i64(range)
+            rng_borrow_or_err(rng)?.i64(range)
         }
-        BtwnValues::Full => rng.try_borrow().unwrap().i64(..),
+        BtwnValues::Full => rng_borrow_or_err(rng)?.i64(..),
     };
     api::result_int64(context, i);
     Ok(())
@@ -159,7 +176,7 @@ pub fn fastrand_double(
     _values: &[*mut sqlite3_value],
     rng: &Rc<RefCell<Rng>>,
 ) -> Result<()> {
-    api::result_double(context, rng.try_borrow().unwrap().f64());
+    api::result_double(context, rng_borrow_or_err(rng)?.f64());
     Ok(())
 }
 
@@ -168,12 +185,13 @@ pub fn fastrand_blob(
     values: &[*mut sqlite3_value],
     rng: &Rc<RefCell<Rng>>,
 ) -> Result<()> {
-    let n = api::value_int64(values.get(0).unwrap());
-    let new_rng = Rng::new();
-    new_rng.seed(rng.try_borrow().unwrap().get_seed());
-    let bytes: Vec<u8> = repeat_with(|| new_rng.u8(..))
-        .take(n.try_into().unwrap())
-        .collect();
+    let n: usize = api::value_int64(
+        values
+            .get(0)
+            .ok_or_else(|| Error::new_message("expected N as 1st argument"))?,
+    ) as usize;
+    let rng = rng_borrow_or_err(rng)?;
+    let bytes: Vec<u8> = repeat_with(|| rng.u8(..)).take(n).collect();
     api::result_blob(context, bytes.as_slice());
     Ok(())
 }
@@ -183,7 +201,7 @@ pub fn fastrand_bool(
     _values: &[*mut sqlite3_value],
     rng: &Rc<RefCell<Rng>>,
 ) -> Result<()> {
-    api::result_bool(context, rng.try_borrow().unwrap().bool());
+    api::result_bool(context, rng_borrow_or_err(rng)?.bool());
     Ok(())
 }
 
@@ -192,7 +210,7 @@ pub fn fastrand_char(
     _values: &[*mut sqlite3_value],
     rng: &Rc<RefCell<Rng>>,
 ) -> Result<()> {
-    api::result_text(context, rng.try_borrow().unwrap().char(..).to_string())?;
+    api::result_text(context, rng_borrow_or_err(rng)?.char(..).to_string())?;
     Ok(())
 }
 pub fn fastrand_alphabetic(
@@ -200,7 +218,7 @@ pub fn fastrand_alphabetic(
     _values: &[*mut sqlite3_value],
     rng: &Rc<RefCell<Rng>>,
 ) -> Result<()> {
-    api::result_text(context, rng.try_borrow().unwrap().alphabetic().to_string())?;
+    api::result_text(context, rng_borrow_or_err(rng)?.alphabetic().to_string())?;
     Ok(())
 }
 
@@ -209,10 +227,7 @@ pub fn fastrand_alphanumeric(
     _values: &[*mut sqlite3_value],
     rng: &Rc<RefCell<Rng>>,
 ) -> Result<()> {
-    api::result_text(
-        context,
-        rng.try_borrow().unwrap().alphanumeric().to_string(),
-    )?;
+    api::result_text(context, rng_borrow_or_err(rng)?.alphanumeric().to_string())?;
     Ok(())
 }
 
@@ -221,7 +236,7 @@ pub fn fastrand_lowercase(
     _values: &[*mut sqlite3_value],
     rng: &Rc<RefCell<Rng>>,
 ) -> Result<()> {
-    api::result_text(context, rng.try_borrow().unwrap().lowercase().to_string())?;
+    api::result_text(context, rng_borrow_or_err(rng)?.lowercase().to_string())?;
     Ok(())
 }
 
@@ -230,7 +245,7 @@ pub fn fastrand_uppercase(
     _values: &[*mut sqlite3_value],
     rng: &Rc<RefCell<Rng>>,
 ) -> Result<()> {
-    api::result_text(context, rng.try_borrow().unwrap().uppercase().to_string())?;
+    api::result_text(context, rng_borrow_or_err(rng)?.uppercase().to_string())?;
     Ok(())
 }
 
@@ -239,14 +254,16 @@ pub fn fastrand_digit(
     values: &[*mut sqlite3_value],
     rng: &Rc<RefCell<Rng>>,
 ) -> Result<()> {
-    let base = api::value_int64(values.get(0).unwrap());
-    api::result_text(
-        context,
-        rng.try_borrow()
-            .unwrap()
-            .digit(base.try_into().unwrap())
-            .to_string(),
-    )?;
+    let base: u32 = api::value_int64(
+        values
+            .get(0)
+            .ok_or_else(|| Error::new_message("expected base as 1st argument"))?,
+    )
+    .try_into()
+    .map_err(|e| {
+        Error::new_message(format!("base must be an unsigned 32-bit integer: {e}").as_str())
+    })?;
+    api::result_text(context, rng_borrow_or_err(rng)?.digit(base).to_string())?;
     Ok(())
 }
 
