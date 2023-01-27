@@ -1,6 +1,8 @@
 # sqlite-fastrandom
 
-A SQLite extension for quickly generating random numbers, booleans, characters, and blobs. **Not cryptographically secure.** Based on [`sqlite-loadable-rs`](https://github.com/asg017/sqlite-loadable-rs) and the [fastrand crate](https://crates.io/crates/fastrand).
+A SQLite extension for quickly generating random numbers, booleans, characters, and blobs. **Not cryptographically secure.** Based on [`sqlite-loadable-rs`](https://github.com/asg017/sqlite-loadable-rs) and the [fastrand crate](https://crates.io/crates/fastrand).`
+
+According to my local benchmarks, `fastrand_int64()` is about 2.6x faster than SQLite's `random()`, and `fastrand_blob()` is about 1.6x faster than `randomblob()`. `sqlite-fastrand` also offers a more ergonomic API with custom ranges, seeds, and boolean/character support. However, it yields psuedo-random results and isn't "truly" random.
 
 If your company or organization finds this library useful, consider [supporting my work](#supporting)!
 
