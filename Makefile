@@ -77,22 +77,22 @@ $(TARGET_LOADABLE_RELEASE): $(prefix) $(shell find . -type f -name '*.rs')
 python: $(TARGET_WHEELS) $(TARGET_LOADABLE) python/sqlite_fastrand/setup.py python/sqlite_fastrand/sqlite_fastrand/__init__.py .github/workflows/rename-wheels.py
 	cp $(TARGET_LOADABLE) $(INTERMEDIATE_PYPACKAGE_EXTENSION) 
 	rm $(TARGET_WHEELS)/sqlite_fastrand* || true
-	pip wheel python/sqlite_fastrand/ -w $(TARGET_WHEELS)
+	pip3 wheel python/sqlite_fastrand/ -w $(TARGET_WHEELS)
 	python3 .github/workflows/rename-wheels.py $(TARGET_WHEELS) $(RENAME_WHEELS_ARGS)
 
 python-release: $(TARGET_LOADABLE_RELEASE) $(TARGET_WHEELS_RELEASE) python/sqlite_fastrand/setup.py python/sqlite_fastrand/sqlite_fastrand/__init__.py .github/workflows/rename-wheels.py
 	cp $(TARGET_LOADABLE_RELEASE)  $(INTERMEDIATE_PYPACKAGE_EXTENSION) 
 	rm $(TARGET_WHEELS_RELEASE)/sqlite_fastrand* || true
-	pip wheel python/sqlite_fastrand/ -w $(TARGET_WHEELS_RELEASE)
+	pip3 wheel python/sqlite_fastrand/ -w $(TARGET_WHEELS_RELEASE)
 	python3 .github/workflows/rename-wheels.py $(TARGET_WHEELS_RELEASE) $(RENAME_WHEELS_ARGS)
 
 datasette: $(TARGET_WHEELS) python/datasette_sqlite_fastrand/setup.py python/datasette_sqlite_fastrand/datasette_sqlite_fastrand/__init__.py
 	rm $(TARGET_WHEELS)/datasette* || true
-	pip wheel python/datasette_sqlite_fastrand/ --no-deps -w $(TARGET_WHEELS)
+	pip3 wheel python/datasette_sqlite_fastrand/ --no-deps -w $(TARGET_WHEELS)
 
 datasette-release: $(TARGET_WHEELS_RELEASE) python/datasette_sqlite_fastrand/setup.py python/datasette_sqlite_fastrand/datasette_sqlite_fastrand/__init__.py
 	rm $(TARGET_WHEELS_RELEASE)/datasette* || true
-	pip wheel python/datasette_sqlite_fastrand/ --no-deps -w $(TARGET_WHEELS_RELEASE)
+	pip3 wheel python/datasette_sqlite_fastrand/ --no-deps -w $(TARGET_WHEELS_RELEASE)
 
 format:
 	cargo fmt
