@@ -36,7 +36,6 @@ FUNCTIONS = [
   'fastrand_alphanumeric',
   'fastrand_blob',
   'fastrand_bool',
-  'fastrand_char',
   'fastrand_debug',
   'fastrand_digit',
   'fastrand_double',
