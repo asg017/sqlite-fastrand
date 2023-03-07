@@ -20,7 +20,7 @@ Returns a debug string of various info about `sqlite-fastrand`, including
 the version string, build date, and commit hash.
 
 ```sql
-select jsonschema_debug();
+select fastrand_debug();
 'Version: v0.1.0
 Source: 247dca8f4cea1abdc30ed3e852c3e5b71374c177'
 ```

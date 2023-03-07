@@ -1,5 +1,5 @@
 # This file is a small utility that rename all .whl files in a given directory
-# and "generalizes" them. The wheels made by python/sqlite_ulid contain the 
+# and "generalizes" them. The wheels made by python/sqlite_fastrand contain the 
 # pre-compiled sqlite extension, but those aren't bound by a specfic Python 
 # runtime or version, that other wheels might be. So, this file will rename
 # those wheels to be "generalized", like replacing "c37-cp37" to "py3-none".

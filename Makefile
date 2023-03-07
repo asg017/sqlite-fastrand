@@ -95,6 +95,9 @@ datasette-release: $(TARGET_WHEELS_RELEASE) python/datasette_sqlite_fastrand/set
 	rm $(TARGET_WHEELS_RELEASE)/datasette* || true
 	pip3 wheel python/datasette_sqlite_fastrand/ --no-deps -w $(TARGET_WHEELS_RELEASE)
 
+npm: VERSION npm/platform-package.README.md.tmpl npm/platform-package.package.json.tmpl npm/sqlite-fastrand/package.json.tmpl scripts/npm_generate_platform_packages.sh
+	scripts/npm_generate_platform_packages.sh
+
 Cargo.toml: VERSION
 	cargo set-version `cat VERSION`
 
@@ -108,6 +111,7 @@ version:
 	make Cargo.toml
 	make python/sqlite_fastrand/sqlite_fastrand/version.py
 	make python/datasette_sqlite_fastrand/datasette_sqlite_fastrand/version.py
+	make npm
 
 format:
 	cargo fmt
@@ -136,9 +140,13 @@ test-loadable:
 test-python:
 	$(PYTHON) tests/test-python.py
 
+test-npm:
+	node npm/sqlite-fastrand/test.js
+
 test:
 	make test-loadable
 	make test-python
+	make test-npm
 
 .PHONY: clean \
 	test test-loadable test-python \
@@ -147,4 +155,5 @@ test:
 	datasette datasette-release \
 	static static-release \
 	debug release \
-	format version
+	format version \
+	npm
