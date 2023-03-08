@@ -1,7 +1,7 @@
 {
   "name": "sqlite-fastrand",
   "version": "0.2.1-alpha.2",
-  "github": "https://github.com/asg017/sqlite-jsonschema",
+  "github": "https://github.com/asg017/sqlite-fastrand",
   "tasks": {
     "test": "deno test --unstable -A test.ts"
   }
