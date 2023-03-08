@@ -61,6 +61,10 @@ jobs:
           path: dist/debug/
       - uses: actions/download-artifact@v3
         with:
+          name: sqlite-fastrand-ubuntu
+          path: npm/sqlite-fastrand-linux-x64/lib
+      - uses: actions/download-artifact@v3
+        with:
           name: sqlite-fastrand-ubuntu-wheels
           path: dist/debug/
       - run: pip install --find-links dist/debug/ sqlite_fastrand
@@ -138,6 +142,10 @@ jobs:
         with:
           name: sqlite-fastrand-macos
           path: dist/debug/
+      - uses: actions/download-artifact@v3
+        with:
+          name: sqlite-fastrand-macos
+          path: npm/sqlite-fastrand-macos-x64/lib
       - uses: actions/download-artifact@v3
         with:
           name: sqlite-fastrand-macos-wheels
@@ -260,6 +268,10 @@ jobs:
         with:
           name: sqlite-fastrand-windows
           path: dist/debug/
+      - uses: actions/download-artifact@v3
+        with:
+          name: sqlite-fastrand-windows
+          path: npm/sqlite-fastrand-windows-x64/lib
       - uses: actions/download-artifact@v3
         with:
           name: sqlite-fastrand-windows-wheels
