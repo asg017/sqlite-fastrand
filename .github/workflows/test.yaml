@@ -145,7 +145,7 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: sqlite-fastrand-macos
-          path: npm/sqlite-fastrand-macos-x64/lib
+          path: npm/sqlite-fastrand-darwin-x64/lib
       - uses: actions/download-artifact@v3
         with:
           name: sqlite-fastrand-macos-wheels
