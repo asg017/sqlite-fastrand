@@ -1,6 +1,6 @@
 {
   "name": "sqlite-fastrand",
-  "version": "0.2.1-alpha.3",
+  "version": "0.2.1-alpha.4",
   "github": "https://github.com/asg017/sqlite-fastrand",
   "tasks": {
     "test": "deno test --unstable -A test.ts"
