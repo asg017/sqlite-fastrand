@@ -107,11 +107,11 @@ select hex(fastrand_blob(16)); -- 'AB72BFE9480197F487933E8071072D4A'
 | Deno           | [`deno.land/x/sqlite_fastrand`](https://deno.land/x/sqlite_fastrand) | [![deno.land/x release](https://img.shields.io/github/v/release/asg017/sqlite-fastrand?color=fef8d2&include_prereleases&label=deno.land%2Fx&logo=deno)](https://deno.land/x/sqlite_fastrand)        |
 | Ruby           | `gem install sqlite-fastrand`                                        | ![Gem](https://img.shields.io/gem/v/sqlite-fastrand?color=red&logo=rubygems&logoColor=white)                                                                                                        |
 | Github Release |                                                                      | ![GitHub tag (latest SemVer pre-release)](https://img.shields.io/github/v/tag/asg017/sqlite-fastrand?color=lightgrey&include_prereleases&label=Github+release&logo=github)                          |
+| Rust           | `cargo add sqlite-fastrand`                                          | [![Crates.io](https://img.shields.io/crates/v/sqlite-fastrand?logo=rust)](https://crates.io/crates/sqlite-fastrand)                                                                                 |
 
 <!--
 | Elixir         | [`hex.pm/packages/sqlite_fastrand`](https://hex.pm/packages/sqlite_fastrand) | [![Hex.pm](https://img.shields.io/hexpm/v/sqlite_fastrand?color=purple&logo=elixir)](https://hex.pm/packages/sqlite_fastrand)                                                                       |
 | Go             | `go get -u github.com/asg017/sqlite-fastrand/bindings/go`               | [![Go Reference](https://pkg.go.dev/badge/github.com/asg017/sqlite-fastrand/bindings/go.svg)](https://pkg.go.dev/github.com/asg017/sqlite-fastrand/bindings/go)                                     |
-| Rust           | `cargo add sqlite-fastrand`                                             | [![Crates.io](https://img.shields.io/crates/v/sqlite-fastrand?logo=rust)](https://crates.io/crates/sqlite-fastrand)                                                                                 |
 -->
 
 The [Releases page](https://github.com/asg017/sqlite-fastrand/releases) contains pre-built binaries for Linux x86_64, MacOS, and Windows.
