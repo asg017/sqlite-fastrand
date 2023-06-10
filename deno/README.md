@@ -3,13 +3,13 @@
 # `x/sqlite_fastrand` Deno Module
 
 [![Tags](https://img.shields.io/github/release/asg017/sqlite-fastrand)](https://github.com/asg017/sqlite-fastrand/releases)
-[![Doc](https://doc.deno.land/badge.svg)](https://doc.deno.land/https/deno.land/x/sqlite-fastrand@0.2.1-alpha.7/mod.ts)
+[![Doc](https://doc.deno.land/badge.svg)](https://doc.deno.land/https/deno.land/x/sqlite-fastrand@0.2.1-alpha.8/mod.ts)
 
 The [`sqlite-fastrand`](https://github.com/asg017/sqlite-fastrand) SQLite extension is available to Deno developers with the [`x/sqlite_fastrand`](https://deno.land/x/sqlite_fastrand) Deno module. It works with [`x/sqlite3`](https://deno.land/x/sqlite3), the fastest and native Deno SQLite3 module.
 
 ```js
 import { Database } from "https://deno.land/x/sqlite3@0.8.0/mod.ts";
-import * as sqlite_fastrand from "https://deno.land/x/sqlite_fastrand@v0.2.1-alpha.7/mod.ts";
+import * as sqlite_fastrand from "https://deno.land/x/sqlite_fastrand@v0.2.1-alpha.8/mod.ts";
 
 const db = new Database(":memory:");
 
