@@ -171,6 +171,17 @@ jobs:
         with:
           name: sqlite-fastrand-windows-wheels
           path: dist/release/wheels/*.whl
+  build-datasette-sqlite-utils:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v3
+      - run: pip install wheel build
+      - run: make datasette-release sqlite-utils-release
+      - uses: actions/upload-artifact@v3
+        with:
+          name: sqlite-fastrand-datasette-sqlite-utils-wheels
+          path: dist/release/wheels/*.whl
   upload-crate:
     runs-on: ubuntu-latest
     steps:
@@ -213,6 +224,7 @@ jobs:
         build-macos-python,
         build-macos-arm-python,
         build-windows-python,
+        build-datasette-sqlite-utils,
       ]
     runs-on: ubuntu-latest
     steps:
@@ -231,6 +243,10 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: sqlite-fastrand-macos-arm-wheels
+          path: dist
+      - uses: actions/download-artifact@v3
+        with:
+          name: sqlite-fastrand-datasette-sqlite-utils-wheels
           path: dist
       - uses: pypa/gh-action-pypi-publish@release/v1
         with:

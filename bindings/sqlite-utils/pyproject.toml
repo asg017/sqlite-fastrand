@@ -1,0 +1,21 @@
+[project]
+name = "sqlite-utils-sqlite-fastrand"
+version = "0.2.1-alpha.9"
+description = "TODO"
+readme = "README.md"
+authors = [{name = "Alex Garcia"}]
+license = {text = "Apache-2.0"}
+classifiers = []
+
+dependencies = [
+    "sqlite-utils",
+    "sqlite-fastrand"
+]
+
+[project.urls]
+Homepage = "https://github.com/asg017/sqlite-fastrand"
+Changelog = "https://github.com/asg017/sqlite-fastrand/releases"
+Issues = "https://github.com/asg017/sqlite-fastrand/issues"
+
+[project.entry-points.sqlite_utils]
+sqlite_fastrand = "sqlite_utils_sqlite_fastrand"
